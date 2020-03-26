@@ -6,16 +6,13 @@ Created on Mon Mar  2 11:14:07 2020
 """
 
 from flask import Flask, request
-from flask_restful import Resource, Api, reqparse, abort
+from flask_restful import Resource, Api, abort
 import json
 
 app = Flask(__name__)
 api = Api(app)
 app.config['JSON_SORT_KEYS'] = False
 
-parser = reqparse.RequestParser()
-parser.add_argument('name', 'platform', 'year', 'genre', 'publisher', 'NA_sales', 'EU_sales', 'JP_sales', 'other_sales',
-                    'global_sales', 'developer')
 with open('game_db.json', 'r') as game_data:
     db = json.load(game_data)
 
@@ -24,7 +21,8 @@ with open('game_db.json', 'r') as game_data:
 # endpoint '/'
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Game Sale API</h1>"
+    return "<h1>Game Sale API</h1>" \
+           ""
 
 
 # Generate the endpoint to the entire list of games
@@ -40,22 +38,23 @@ class GameList(Resource):
             return db[:20]
 
     def post(self):
-        args = parser.parse_args()
+        args = request.args
         item_id = int(db[-1]['ID']) + 1
+
         d = {'ID': item_id,
-             'Name': args['name'],
-             'Platform': args['platform'],
-             'Year': args['year'],
-             'Genre': args['genre'],
-             'Publisher': args['publisher'],
-             'NA_Sales': args['NA_sales'],
-             'JP_Sales': args['JP_sales'],
-             'Other_Sales': args['other_sales'],
-             'Global_Sales': args['global_sales'],
-             'Developer': args['developer']}
+             'Name': args.get('name'),
+             'Platform': args.get('platform'),
+             'Year_of_Release': args.get('year'),
+             'Genre': args.get('genre'),
+             'Publisher': args.get('publisher'),
+             'EU_Sales': args.get('eu_sales'),
+             'NA_Sales': args.get('na_sales'),
+             'JP_Sales': args.get('jp_sales'),
+             'Other_Sales': args.get('other_sales'),
+             'Global_Sales': args.get('global_sales'),
+             'Developer': args.get('developer')}
+
         db.append(d)
-        if len(d) != 11:
-            abort(400)
         return d, 201
 
 
@@ -63,24 +62,27 @@ class GameList(Resource):
 # endpoint '/api/v1/games/search/'
 class GameByParams(Resource):
     def get(self, game_id):
+
         result = [item for item in db if item['ID'] == game_id]
         return result
 
     def put(self, game_id):
-        args = parser.parse_args()
-        result = [item for item in db if item['ID'] == game_id][0]
-        result['Name'] = args['name']
-        result['Platform'] = args['platform']
-        result['Year'] = args['year']
-        result['Genre'] = args['genre']
-        result['Publisher'] = args['publisher']
-        result['NA_Sales'] = args['NA_sales']
-        result['JP_Sales'] = args['JP_sales']
-        result['Other_Sales'] = args['other_sales']
-        result['Global_Sales'] = args['global_sales']
-        result['Developer'] = args['developer']
+        args = request.args
 
-        return result, 200
+        result = [item for item in db if item['ID'] == game_id][0]
+        result['Name'] = args.get('name')
+        result['Platform'] = args.get('platform')
+        result['Year_of_Release'] = args.get('year')
+        result['Genre'] = args.get('genre')
+        result['Publisher'] = args.get('publisher')
+        result['EU_Sales'] = args.get('eu_sales')
+        result['NA_Sales'] = args.get('na_sales')
+        result['JP_Sales'] = args.get('jp_sales')
+        result['Other_Sales'] = args.get('other_sales')
+        result['Global_Sales'] = args.get('global_sales')
+        result['Developer'] = args.get('developer')
+
+        return args, 200
 
     def delete(self, game_id):
         del db[game_id]
@@ -146,4 +148,4 @@ api.add_resource(SalesList, '/api/v1/sales/')
 api.add_resource(SalesByName, '/api/v1/sales/search')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
