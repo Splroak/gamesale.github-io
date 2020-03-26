@@ -8,7 +8,7 @@ import pandas as pd
 import json
 import numpy as np
 
-df = pd.read_csv('game_data_2.csv')
+df = pd.read_csv('game_data.csv')
 df = df.replace({np.nan:None})
 df= df.to_dict('records')
 with open('game_db.json', 'w') as game_data:
