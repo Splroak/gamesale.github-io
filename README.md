@@ -37,4 +37,32 @@ This is a simple API to retrieve data from an existing game sale database. It is
   |Parameter|Description|
   |-----------|-----------|
   |*name*|Name of the game you want to return|
-  |*platform*|
+  |*platform*| Platform on which the game was piblished on|
+  |*year*| The game's release year|
+  |*genre*| The game's genre|
+  |*publisher*| The game's publisher|
+  |*eu_sales*| The game's sales in EU region|
+  |*na_sales*| The game's sales in NA region|
+  |*JP_sales*| The game's sales in JP region|
+  |*other_sales*| The game's sales in other parts of the world|
+  |*global_sales*| The game's total sales|
+  |*developer*| The game's developer|
+
+#### PUT api/v1/games/search/
+  Update an existing game.
+  |Parameter|Description|
+  |-----------|-----------|
+  |*name*|Name of the game you want to return|
+  |*platform*| Platform on which the game was piblished on|
+  |*year*| The game's release year|
+  |*genre*| The game's genre|
+  |*publisher*| The game's publisher|
+  |*eu_sales*| The game's sales in EU region|
+  |*na_sales*| The game's sales in NA region|
+  |*JP_sales*| The game's sales in JP region|
+  |*other_sales*| The game's sales in other parts of the world|
+  |*global_sales*| The game's total sales|
+  |*developer*| The game's developer|
+ 
+ #### DELETE api/v1/games/search/
+  Delete a game by ID
