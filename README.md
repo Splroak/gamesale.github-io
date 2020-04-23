@@ -1,4 +1,5 @@
 This is a simple API to retrieve data from an existing game sale database. It is made with Flask and flask-restful extension.
+
 [Website](http://flask-env.eba-rppbmmfr.eu-north-1.elasticbeanstalk.com/)
 ## FILES:
 
